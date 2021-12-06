@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<HTML>
+	<body>
+		<form action="DeletePost.php" method="post">
+		<table>
+			<?php 
+				$mysqli = new mysqli("mysql.eecs.ku.edu", "p143a365", "EMeiza7u","p143a365");
+				/* check connection */
+				if ($mysqli->connect_errno) {
+					printf("Connect failed: %s\n", $mysqli->connect_error);
+					exit();
+				}
+				
+				echo '<tr>';
+				echo '<th  style="text-align:center">';
+				echo "Post_ID";
+				echo '</th>';
+				
+				echo '<th style="text-align:center">';
+				echo "Content";
+				echo '</th>';
+				
+				echo '<th style="text-align:center">';
+				echo "Author_id";
+				echo '</th>';
+				
+				echo '<th style="text-align:center">';
+				echo "Delete?";
+				echo '</th>';
+				echo '</tr>';
+				
+				$query = "SELECT * FROM Posts";
+				if ($result = $mysqli->query($query)) {
+					/* fetch associative array */
+					while ($row = $result->fetch_assoc()) {
+						echo '<tr>';
+						echo '<td style="text-align:center">';
+						echo $row["post_id"];
+						echo '</td>';
+						
+						echo '<td style="text-align:center">';
+						echo $row["content"];
+						echo '</td>';
+						
+						echo '<td style="text-align:center">';
+						echo $row["author_id"];
+						echo '</td>';
+						
+						echo '<td style="text-align:center">';
+						echo '<input type="checkbox" name="delete[]" value=' .$row["post_id"]. '/>&nbsp;';
+						//echo 'a';
+						echo '</td>';
+						echo '</tr>';
+					}
+					/* free result set */
+					$result->free();
+				}
+			?>
+		</table>
+		<input type="submit">
+		</form>
+	</body>
+</HTML>
